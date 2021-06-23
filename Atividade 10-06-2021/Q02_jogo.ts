@@ -2,28 +2,65 @@ import {Personagem, Soldado, Cavaleiro} from './Q02_personagem'
 
 class jogo{
 
-    incluir(){
+    guerreiros: Array<Personagem> = [];
 
+    numGuerreios(): number {
+        return this.guerreiros.length
     }
-    consultar(){
 
+    constructor(){
+        this.guerreiros = []
     }
-    atacar(){
+    
+    cont = 0
+    
+    incluir(idp: Personagem): void{
 
+        for(let i = 0; i < this.guerreiros.length; i++){
+            if(idp.id != this.guerreiros[i].id){
+                this.cont += 1;
+            }
+        }
+        if(this.cont == this.guerreiros.length){
+            this.guerreiros.push(idp);
+            console.log('Persoangem criado com sucesso!')
+        }
+        else{
+            console.log('ID já existente!')
+        }
     }
-    avaliarBatalha(){
+    consultar(idp: number): any{
+        for( let i = 0; i < this.guerreiros.length ; i++) {
+            if (idp == this.guerreiros[i].id) {
+                return this.guerreiros[i];
+            }
+        }
+        return null;
+    }
+    
+    atacar(idAtq: number,idDef: number ){
+        if (idAtq != idDef){
+            console.log('Um guerreiro não pode se atacar!')
+        }
+        
+        let guerreiro1 = this.consultar(idAtq);
+        let guerreiro2 = this.consultar(idDef);
 
+        if (guerreiro1 && guerreiro2) {
+            
+            if (guerreiro1 instanceof Cavaleiro || guerreiro1 instanceof Soldado) {
+                guerreiro1.atacar(guerreiro2);
+            }
+        }
+    }
+    
+    avaliarBatalha(): void{
+
+        for( let i = 0; i < this.guerreiros.length ; i++) {
+            console.log('Id: ', this.guerreiros[i].id);
+            console.log('Nome: ', this.guerreiros[i].nome);
+            console.log('Energia: ', this.guerreiros[i].energia);
+            console.log('Esta vivo? \n', this.guerreiros[i].estaVivo())
+        }
     }
 }
-
-let personagem = new Personagem(1, 'artorias', 100)
-let soldado1 = new Soldado(2, 'Siff', 100, 15)
-let soldado2 = new Soldado(3, 'Ornstein', 100, 18)
-let caveleiro = new Cavaleiro(4, 'Doko', 100, 30)
-
-soldado1.atacar(soldado2)
-console.log(soldado2.energia)
-caveleiro.atacar(soldado1)
-console.log(soldado1.energia)
-
-
